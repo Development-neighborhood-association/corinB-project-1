@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: wms
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/wms_db
+    username: wms_user
+    password: wms1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# 애플리케이션 설정
+app:
+  encryption:
+    # AES 암호화 키 (16, 24, 또는 32 바이트)
+    # 프로덕션 환경에서는 환경변수나 외부 설정으로 관리 필요
+    secret-key: "MySecretKey12345"  # 16바이트 예시
