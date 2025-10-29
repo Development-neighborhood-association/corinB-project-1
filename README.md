@@ -427,24 +427,6 @@ public class SampleService {
 7. **트랜잭션 관리**: 클래스 레벨 `@Transactional(readOnly = true)`, 쓰기 메서드는 `@Transactional`
 8. **예외 처리**: `IllegalArgumentException` (리소스 없음), `DataIntegrityViolationException` (무결성 위반)
 
-## 📝 추가 문서
-
-### 개발 가이드
-- [CLAUDE.md](./CLAUDE.md) - Claude Code 개발 가이드 (프로젝트 아키텍처 및 빌드 명령어)
-
-### API 명세서
-- [SERVICE_API.md](./SERVICE_API.md) - Service Layer API 참조
-- [REPOSITORY_API.md](./REPOSITORY_API.md) - Repository Layer API 참조
-- [CONTROLLER_API.md](./CONTROLLER_API.md) - Controller Layer API 설계 (구현 예정)
-- [CONTROLLER_PLAN.md](./CONTROLLER_PLAN.md) - Controller 구현 계획
-
-### 보안 및 유틸리티
-- [ID_ENCRYPTION_USAGE.md](./ID_ENCRYPTION_USAGE.md) - ID 암호화 사용 가이드
-
-## 📄 라이선스
-
-This project is licensed under the terms specified in the project.
-
 ---
 
 **개발 환경**: Java 21 | Spring Boot 3.5.7 | MySQL 8.x | Gradle 8.x
