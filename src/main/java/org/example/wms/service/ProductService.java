@@ -100,7 +100,7 @@ public class ProductService {
      * @param pageable 페이지 정보
      * @return 검색된 상품 목록
      */
-    Page<ProductListDTO> searchByPriceRange(Double minPrice, Double maxPrice, Pageable pageable){
+    public Page<ProductListDTO> searchByPriceRange(Double minPrice, Double maxPrice, Pageable pageable){
         return ProductListDTO
                 .of(productRepository.findByPriceBetween(minPrice,maxPrice, pageable),
                     idEncryptionUtil);

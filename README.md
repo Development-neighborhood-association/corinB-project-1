@@ -1,17 +1,41 @@
 # WMS (Warehouse Management System)
 
-물류창고의 상품 재고를 관리하기 위한 Spring Boot 기반 웹 애플리케이션
+![Java](https://img.shields.io/badge/Java-21-007396?style=flat-square&logo=java)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-6DB33F?style=flat-square&logo=spring-boot)
+![MySQL](https://img.shields.io/badge/MySQL-8.x-4479A1?style=flat-square&logo=mysql)
+![Gradle](https://img.shields.io/badge/Gradle-8.x-02303A?style=flat-square&logo=gradle)
+![Status](https://img.shields.io/badge/Status-Completed-success?style=flat-square)
+
+물류창고의 상품 재고를 관리하기 위한 Spring Boot 기반 REST API 애플리케이션
 
 ## 📋 목차
 
-1. [기술 스택](#-기술-스택)
-2. [시작하기](#-시작하기)
-3. [개발 현황](#-개발-현황)
-4. [도메인 모델](#-도메인-모델)
-5. [구현된 기능](#-구현된-기능)
-6. [보안 기능](#-보안-기능)
-7. [프로젝트 구조](#-프로젝트-구조)
-8. [개발 가이드](#-개발-가이드)
+1. [프로젝트 소개](#-프로젝트-소개)
+2. [기술 스택](#-기술-스택)
+3. [시작하기](#-시작하기)
+4. [API 문서](#-api-문서)
+5. [개발 현황](#-개발-현황)
+6. [도메인 모델](#-도메인-모델)
+7. [구현된 기능](#-구현된-기능)
+8. [보안 기능](#-보안-기능)
+9. [프로젝트 구조](#-프로젝트-구조)
+10. [개발 가이드](#-개발-가이드)
+11. [문서](#-문서)
+
+---
+
+## 🎯 프로젝트 소개
+
+WMS(Warehouse Management System)는 물류창고의 상품과 재고를 효율적으로 관리하기 위한 REST API 기반 백엔드 시스템입니다.
+
+### 주요 특징
+
+✨ **완전한 CRUD API** - 상품, 제조사, 창고, 재고에 대한 전체 생명주기 관리
+🔐 **보안 강화** - AES 암호화를 통한 엔티티 ID 보호
+📊 **고급 검색** - 다양한 조건을 활용한 필터링 및 페이징 지원
+⚡ **성능 최적화** - N+1 문제 해결 및 효율적인 쿼리 설계
+🧪 **높은 테스트 커버리지** - 모든 서비스 레이어에 대한 단위 테스트
+📝 **표준화된 응답** - 일관된 API 응답 형식
 
 ## 🛠 기술 스택
 
@@ -79,7 +103,71 @@ FLUSH PRIVILEGES;
 ./gradlew test --tests "org.example.wms.service.ProductServiceTest.createProduct"
 ```
 
-## 🚧 개발 현황
+### 애플리케이션 접속
+
+애플리케이션 실행 후:
+- **API Base URL**: `http://localhost:8080/api`
+- **Swagger UI**: (구현 예정)
+
+---
+
+## 📚 API 문서
+
+### REST API 엔드포인트
+
+#### 1. 상품 관리 (`/api/products`)
+- `POST /api/products` - 상품 생성
+- `GET /api/products/{id}` - 상품 상세 조회
+- `GET /api/products` - 상품 목록 조회 (페이징)
+- `GET /api/products/search?name={name}` - 상품명 검색
+- `GET /api/products/search/by-manufacturer?manufacturer={name}` - 제조사명으로 상품 검색
+- `GET /api/products/search/by-price-range?minPrice={min}&maxPrice={max}` - 가격 범위 검색
+- `PUT /api/products/{id}` - 상품 정보 수정
+- `DELETE /api/products/{id}` - 상품 삭제
+
+#### 2. 제조사 관리 (`/api/manufacturers`)
+- `POST /api/manufacturers` - 제조사 생성
+- `GET /api/manufacturers/{id}` - 제조사 상세 조회 (생산 상품 포함)
+- `GET /api/manufacturers` - 제조사 목록 조회 (페이징)
+- `GET /api/manufacturers/search?companyName={name}` - 회사명 검색
+- `PUT /api/manufacturers/{id}` - 제조사 정보 수정
+- `DELETE /api/manufacturers/{id}` - 제조사 삭제
+
+#### 3. 창고 관리 (`/api/warehouses`)
+- `POST /api/warehouses` - 창고 생성
+- `GET /api/warehouses/{id}` - 창고 상세 조회 (보관 상품 포함)
+- `GET /api/warehouses` - 창고 목록 조회 (페이징)
+- `GET /api/warehouses/search?name={name}` - 창고명 검색
+- `GET /api/warehouses/search/by-location?location={location}` - 위치 검색
+- `PUT /api/warehouses/{id}` - 창고 정보 수정
+- `DELETE /api/warehouses/{id}` - 창고 삭제
+
+#### 4. 재고 관리 (`/api/inventories`)
+- `POST /api/inventories` - 재고 등록
+- `GET /api/inventories/{id}` - 재고 상세 조회
+- `GET /api/inventories` - 전체 재고 목록 조회 (페이징)
+- `GET /api/inventories/by-product/{productId}` - 상품별 재고 조회
+- `GET /api/inventories/by-warehouse/{warehouseId}` - 창고별 재고 조회
+- `POST /api/inventories/stock-in` - 재고 입고 (수량 증가)
+- `POST /api/inventories/stock-out` - 재고 출고 (수량 감소)
+- `DELETE /api/inventories/{id}` - 재고 삭제
+
+### 표준 응답 형식
+
+```json
+{
+  "success": true,
+  "data": { /* 실제 데이터 */ },
+  "message": "성공 메시지",
+  "timestamp": "2025-01-15T10:30:00"
+}
+```
+
+**자세한 API 명세는 [API_SPECIFICATION.md](./API_SPECIFICATION.md)를 참조하세요.**
+
+---
+
+## ✅ 개발 현황
 
 ### 완료된 구성 요소
 
@@ -105,15 +193,33 @@ FLUSH PRIVILEGES;
 - `dto/info` - 상세 정보 DTO (ProductInfoDTO, ManufacturerInfoDTO 등)
 - `dto/list` - 목록 조회 DTO (ProductListDTO, WarehouseListDTO 등)
 - `dto/crud` - 생성/수정 요청 DTO (ProductCreateRequest, StockInRequest 등)
+- `ApiResponse` - 표준 API 응답 래퍼
 
-#### ✅ Utility
+#### ✅ Presentation Layer (Controller)
+- `ProductController` - 상품 관리 REST API
+- `ManufactureController` - 제조사 관리 REST API
+- `WarehouseController` - 창고 관리 REST API
+- `InventoryController` - 재고 관리 REST API
+- `GlobalExceptionHandler` - 전역 예외 처리
+
+#### ✅ Utility & Configuration
 - `IdEncryptionUtil` - AES 기반 ID 암호화/복호화
+- `AppConfig` - 애플리케이션 설정
 
-### 개발 예정
+#### ✅ Test Layer
+- Service Layer 단위 테스트 (100% 완료)
+- Utility 단위 테스트
 
-#### 🔄 Presentation Layer (Controller)
-- REST API 엔드포인트 구현 예정
-- 참조: [CONTROLLER_PLAN.md](./CONTROLLER_PLAN.md)
+### 프로젝트 완료 상태
+
+🎉 **모든 계층 구현 완료**
+- ✅ Domain Layer
+- ✅ Repository Layer
+- ✅ Service Layer
+- ✅ DTO Layer
+- ✅ Controller Layer (REST API)
+- ✅ Utility & Configuration
+- ✅ Test Layer
 
 ## 📊 도메인 모델
 
@@ -262,9 +368,13 @@ src/
 │   │   │       ├── InventoryCreateRequest.java
 │   │   │       ├── StockInRequest.java
 │   │   │       └── StockOutRequest.java
-│   │   ├── controller/      # REST API 컨트롤러 (예정)
+│   │   ├── controller/      # REST API 컨트롤러
 │   │   │   ├── ProductController.java
-│   │   │   └── ManufactureController.java
+│   │   │   ├── ManufactureController.java
+│   │   │   ├── WarehouseController.java
+│   │   │   └── InventoryController.java
+│   │   ├── exception/       # 예외 처리
+│   │   │   └── GlobalExceptionHandler.java
 │   │   ├── util/            # 유틸리티 클래스
 │   │   │   └── IdEncryptionUtil.java
 │   │   ├── config/          # 설정 클래스
@@ -429,4 +539,25 @@ public class SampleService {
 
 ---
 
+## 📝 문서
+
+프로젝트와 관련된 상세 문서는 아래를 참조하세요:
+
+### API 문서
+- **[API_SPECIFICATION.md](./API_SPECIFICATION.md)** - 전체 REST API 명세서
+  - 모든 엔드포인트 상세 설명
+  - 요청/응답 예시
+  - HTTP 상태 코드
+  - 에러 처리 가이드
+
+### 보안 문서
+- **[ID_ENCRYPTION_USAGE.md](./ID_ENCRYPTION_USAGE.md)** - ID 암호화 사용 가이드
+  - IdEncryptionUtil 사용법
+  - 환경별 키 관리
+  - DTO 변환 패턴
+
+---
+
 **개발 환경**: Java 21 | Spring Boot 3.5.7 | MySQL 8.x | Gradle 8.x
+
+**프로젝트 완료일**: 2025년 10월 30일

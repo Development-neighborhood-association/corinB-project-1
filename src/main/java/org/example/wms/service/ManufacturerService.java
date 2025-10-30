@@ -74,7 +74,7 @@ public class ManufacturerService {
      * @param pageable 페이지 정보
      * @return 검색된 제조사 목록
      */
-    Page<ManufacturerListDTO> searchByCompanyName(String companyName, Pageable pageable){
+    public Page<ManufacturerListDTO> searchByCompanyName(String companyName, Pageable pageable){
         return ManufacturerListDTO.of(
                 manufacturerRepository
                     .findByCompanyNameContaining(companyName, pageable),
@@ -90,7 +90,7 @@ public class ManufacturerService {
      * @throws IllegalArgumentException 제조사를 찾을 수 없는 경우
      */
     @Transactional
-    void updateManufacturer(String encryptedId, ManufacturerUpdateRequest request){
+    public void updateManufacturer(String encryptedId, ManufacturerUpdateRequest request){
         Long id = idEncryptionUtil.decrypt(encryptedId);
         ManufacturerEntity entity = manufacturerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("제조사를 찾을 수 없습니다."));
